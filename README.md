@@ -97,9 +97,5 @@ context-aware conversations.
 ### 📊 GitHub Stats
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=KumarPriyam123&show_icons=true&theme=tokyonight&hide_border=true" alt="Stats" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=KumarPriyam123&layout=compact&theme=tokyonight&hide_border=true" alt="Languages" />
-</p>
-<p align="center">
   <img src="https://github-readme-streak-stats.herokuapp.com/?user=KumarPriyam123&theme=tokyonight&hide_border=true" alt="Streak" />
 </p>
