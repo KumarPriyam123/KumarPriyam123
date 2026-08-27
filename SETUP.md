@@ -35,6 +35,25 @@ Both themes are wired through `<picture>` + `prefers-color-scheme`, so GitHub sw
 them automatically. All text inside the SVGs is vector paths — no font dependency,
 so it renders identically on every machine.
 
+## Animation
+
+The SVGs animate on load with CSS keyframes (no JS — GitHub strips scripts from SVG):
+
+| class | effect | used on |
+| --- | --- | --- |
+| `.dash` | stroke draw-on via `pathLength="1"` + `stroke-dashoffset` | hairlines, the name outline |
+| `.f` | fade in | meta rows, path tags, panel chrome |
+| `.rise` | fade + 10px translate up | section labels, role line, stat cells |
+| `.rot` | 12s loop, four items at ~3s each | the `focus >` line in the header |
+| `.d1`-`.d7` | stagger, 0.05s to 1.45s | everything above |
+
+The header name draws itself as an outline first (1.5s), then the solid fill arrives
+underneath. Every file honours `prefers-reduced-motion: reduce`: motion is disabled,
+elements resolve to their final state, and the rotating line pins to its first item.
+
+Animation replays whenever the page loads. To change the rotating items, edit the
+`FOCUS` list in the generator and rebuild.
+
 ## Editing the artwork
 
 The SVGs are plain text. To change wording, the safe edit is to regenerate rather than
@@ -47,6 +66,11 @@ converted to outlines at 880px width.
       GitHub shows your most-starred repos, which is not the same as your best work.
 - [ ] Update your GitHub bio to match: `AI Engineer · SDE — retrieval systems,
       agent orchestration, multi-tenant backends. CSE @ NIT Delhi '27`
-- [ ] Add the JobMatch repo link to the projects table once it is public
-- [ ] Make MARL-MAPS and ClinicQ public when you are ready — the table links them as
-      soon as you add the URLs
+- [x] Multi-Tenant-Agentic-Data-Pipeline linked (public)
+- [ ] Add the JobMatch repo link to the projects table — repo name still unknown
+      (JobAutomation is a different project: the n8n application pipeline)
+- [ ] Make Clinic-Automation (ClinicQ) and MARL-MAPS public when ready — the table
+      links them as soon as you add the URLs
+- [ ] Consider renaming the company-assignment repos: Millipixel_assignment_231210062...
+      and Azentio_..._231210062_Agentic_Sol sit on your public profile with your roll
+      number in the name, and tell every other company where else you interviewed
