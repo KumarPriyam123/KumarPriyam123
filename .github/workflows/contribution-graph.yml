@@ -10,9 +10,10 @@ on:
   push:
     branches: [main]
     paths:
+      # Deliberately NOT README.md: the graph does not depend on it, and listing it
+      # made every README edit produce a bot commit that blocked the next push.
       - 'scripts/contrib.py'
       - '.github/workflows/contribution-graph.yml'
-      - 'README.md'
 
 permissions:
   contents: write
