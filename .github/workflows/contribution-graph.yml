@@ -1,0 +1,47 @@
+name: contribution graph
+
+# Regenerates assets/contrib.svg + assets/dark/contrib.svg from the GitHub API
+# so the profile README does not depend on a third-party badge service.
+
+on:
+  schedule:
+    - cron: '30 0 * * *'        # 06:00 IST daily
+  workflow_dispatch:             # run manually from the Actions tab
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/contrib.py'
+      - '.github/workflows/contribution-graph.yml'
+      - 'README.md'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install --quiet fonttools
+
+      - name: Render contribution graph
+        env:
+          # GITHUB_TOKEN usually cannot read a user's contribution calendar.
+          # Add a classic PAT with the read:user scope as the repo secret GH_PAT.
+          GH_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+          GH_LOGIN: ${{ github.repository_owner }}
+        run: python scripts/contrib.py
+
+      - name: Commit if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/contrib.svg assets/dark/contrib.svg
+          git diff --staged --quiet && echo "no change" && exit 0
+          git commit -m "chore: refresh contribution graph"
+          git push

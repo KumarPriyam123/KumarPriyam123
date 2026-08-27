@@ -96,7 +96,7 @@ Evaluated on HotpotQA over a 9,769-passage FAISS index, served through vLLM on a
 <picture><source media="(prefers-color-scheme: dark)" srcset="assets/dark/stats.svg"/><img src="assets/stats.svg" alt="Signal — measured metrics"/></picture>
 <br>
 <br>
-<picture><source media="(prefers-color-scheme: dark)" srcset="https://github-readme-activity-graph.vercel.app/graph?username=KumarPriyam123&bg_color=0d1117&color=ffffff&line=ffffff&point=ffffff&area_color=8b949e&area=true&hide_border=true&radius=8"/><img src="https://github-readme-activity-graph.vercel.app/graph?username=KumarPriyam123&bg_color=ffffff&color=000000&line=000000&point=000000&area_color=57606a&area=true&hide_border=true&radius=8" alt="Contribution activity" width="95%"/></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/dark/contrib.svg"/><img src="assets/contrib.svg" alt="Contribution graph — last 12 months"/></picture>
 </div>
 
 <br>

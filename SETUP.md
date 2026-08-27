@@ -26,10 +26,37 @@ git push -u origin main
 ## Files
 
 ```
-README.md            the profile page
-assets/*.svg         light-theme artwork
-assets/dark/*.svg    dark-theme artwork
+README.md                      the profile page
+assets/*.svg                   light-theme artwork
+assets/dark/*.svg              dark-theme artwork
+scripts/contrib.py             builds the contribution graph from the GitHub API
+scripts/fonts/*.ttf            JetBrains Mono, subsetted to ASCII (~9KB each)
+.github/workflows/             daily refresh for the contribution graph
 ```
+
+## Contribution graph — one-time setup
+
+The graph is generated from your own data, not fetched from a badge service, so it
+cannot break because someone else's Vercel app is over quota. It needs a token once:
+
+1. github.com/settings/tokens -> **Generate new token (classic)** -> tick only
+   **`read:user`** -> generate and copy it.
+2. In this repo: **Settings -> Secrets and variables -> Actions -> New repository
+   secret**, name it exactly **`GH_PAT`**, paste the token.
+3. Push. The workflow runs on push, on manual dispatch, and daily at 06:00 IST,
+   and commits `assets/contrib.svg` + `assets/dark/contrib.svg`.
+
+`GITHUB_TOKEN` is tried as a fallback but usually cannot read a contribution
+calendar, so expect to need the PAT. To generate it locally instead:
+
+```powershell
+pip install fonttools
+$env:GH_TOKEN="<your token>"
+python scripts/contrib.py
+```
+
+If you would rather skip the token entirely, delete the `<picture>` line referencing
+`contrib.svg` from the telemetry section — nothing else depends on it.
 
 Both themes are wired through `<picture>` + `prefers-color-scheme`, so GitHub swaps
 them automatically. All text inside the SVGs is vector paths — no font dependency,
