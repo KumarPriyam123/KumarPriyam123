@@ -135,7 +135,7 @@ Evaluated on HotpotQA over a 9,769-passage FAISS index, served through vLLM on a
 <a href="mailto:kpriyam2005p@gmail.com"><picture><source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/badge/EMAIL-0d1117?style=flat-square&logo=gmail&logoColor=ffffff"/><img src="https://img.shields.io/badge/EMAIL-ffffff?style=flat-square&logo=gmail&logoColor=000000" alt="Email"/></picture></a>
 <br>
 <br>
-<sub><b>résumé</b> &nbsp;·&nbsp; <a href="https://drive.google.com/file/d/1lPMTdrULT4iWPU5typRmVDVlBtF81wHf/view">ai + sde</a> &nbsp;·&nbsp; <a href="https://drive.google.com/file/d/1XJmW1XJ5lQ17fY251xmbZpC3lzsZgviR/view">data engineering</a></sub>
+<sub><b>résumé</b> &nbsp;·&nbsp; <a href="https://drive.google.com/file/d/1lPMTdrULT4iWPU5typRmVDVlBtF81wHf/view">ai engineer</a> &nbsp;·&nbsp; <a href="https://drive.google.com/file/d/1sDOkbyz0YaCgN3EzVKoCykDRa7ZAyBo9/view">sde</a></sub>
 <br>
 <br>
 <sub><code>status: building</code></sub>
