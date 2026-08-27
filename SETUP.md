@@ -67,10 +67,14 @@ converted to outlines at 880px width.
 - [ ] Update your GitHub bio to match: `AI Engineer · SDE — retrieval systems,
       agent orchestration, multi-tenant backends. CSE @ NIT Delhi '27`
 - [x] Multi-Tenant-Agentic-Data-Pipeline linked (public)
+- [x] Interview-Platforms_Users linked (public)
 - [ ] Add the JobMatch repo link to the projects table — repo name still unknown
       (JobAutomation is a different project: the n8n application pipeline)
 - [ ] Make Clinic-Automation (ClinicQ) and MARL-MAPS public when ready — the table
       links them as soon as you add the URLs
-- [ ] Consider renaming the company-assignment repos: Millipixel_assignment_231210062...
-      and Azentio_..._231210062_Agentic_Sol sit on your public profile with your roll
-      number in the name, and tell every other company where else you interviewed
+- [ ] Consider renaming, in order of how bad they look on the profile:
+      * Millipixel_assignment_231210062_Kumar_Priyam and Azentio_..._231210062_Agentic_Sol
+        — roll number in the name, and they tell every company where else you interviewed
+      * Interview-Platforms_Users — mixed separators and a meaningless _Users suffix;
+        `interview-platform` or `mockstack` reads like a product
+      Renaming is safe: GitHub redirects the old URL, so the README link keeps working
