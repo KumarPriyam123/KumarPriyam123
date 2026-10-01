@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render a monochrome contribution heatmap as self-hosted SVG (light + dark).
+"""Render a contribution heatmap as self-hosted SVG (light + dark).
 
 No third-party badge service: fetches the calendar from GitHub's GraphQL API and
 draws it locally, so the README cannot break because someone else's Vercel app is
@@ -90,7 +90,37 @@ def streaks(weeks):
 # -------------------------------------------------------------------- render
 TH = {'light': dict(fg='#000000', muted='#57606a', hair='#d0d7de', faint='#8c959f'),
       'dark':  dict(fg='#ffffff', muted='#8b949e', hair='#30363d', faint='#6e7681')}
-STEPS = [0.07, 0.28, 0.5, 0.74, 1.0]
+
+# Cell colours per theme: [empty, level 1, level 2, level 3, level 4].
+# Level 1 is already a clear colour, so every active day stands out on the page.
+PALETTES = {
+    'green':  {'dark':  ['#161b22', '#0f6d36', '#16a34a', '#34d36b', '#8df5a9'],
+               'light': ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39']},
+    'ocean':  {'dark':  ['#161b22', '#0b4f8a', '#1478d4', '#3aa8ff', '#a6dcff'],
+               'light': ['#ebedf0', '#a5d8ff', '#4dabf7', '#1c7ed6', '#0b4a8f']},
+    'ember':  {'dark':  ['#161b22', '#7a2e0e', '#c2501a', '#f5842a', '#ffd27a'],
+               'light': ['#ebedf0', '#ffd8a8', '#ffa94d', '#f76707', '#a33a00']},
+    'aurora': {'dark':  ['#161b22', '#4c2a99', '#7b4ddb', '#a97bff', '#e0ccff'],
+               'light': ['#ebedf0', '#d0bfff', '#9775fa', '#7048e8', '#432c9e']},
+}
+PALETTE = os.environ.get('CONTRIB_PALETTE', 'green')
+
+def thresholds(weeks):
+    """Quartiles of the active days, close to how GitHub's own graph buckets them.
+
+    Scaling by the busiest day put almost every ordinary day in level 1 (one
+    21-commit day meant a day needed 8+ to reach level 2). Quartiles spread the
+    active days across all four levels; empty days stay empty.
+    """
+    xs = sorted(n for w in weeks for _, n in w if n > 0)
+    if not xs:
+        return [1, 1, 1]
+    q = lambda p: xs[min(len(xs) - 1, int(p * len(xs)))]
+    return [q(.25), q(.5), q(.75)]
+
+def level(n, t):
+    return 0 if n == 0 else 1 + sum(n > x for x in t)
+
 CSS = """  <style>
     .f{opacity:0;animation:f .8s ease forwards}@keyframes f{to{opacity:1}}
     .cell{opacity:0;animation:pop .5s ease forwards}
@@ -107,8 +137,9 @@ MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 
 def render(theme, total, weeks, cur, best, busiest):
     c = TH[theme]
+    ramp = PALETTES[PALETTE][theme]
+    t = thresholds(weeks)
     gx, gy = 44, 98
-    hi = max(1, busiest)
     h = int(gy + 7 * (CELL + GAP) + 56)
     b = f'  <rect class="f" x="0.5" y="0.5" width="{W-1}" height="{h-1}" rx="6" fill="none" stroke="{c["hair"]}"/>\n'
     b += '  <g class="f d1">\n'
@@ -143,20 +174,20 @@ def render(theme, total, weeks, cur, best, busiest):
         for (date, n) in wk:
             di = datetime.date.fromisoformat(date).weekday()
             di = (di + 1) % 7                      # calendar starts Sunday
-            lvl = 0 if n == 0 else min(4, 1 + int(3 * (n - 1) / hi))
+            lvl = level(n, t)
             delay = .35 + wi * 0.007
             b += (f'  <rect class="cell" x="{gx+wi*step:.1f}" y="{gy+di*step:.1f}" '
-                  f'width="{CELL}" height="{CELL}" rx="2.5" fill="{c["fg"]}" '
-                  f'fill-opacity="{STEPS[lvl]}" style="animation-delay:{delay:.2f}s"/>\n')
+                  f'width="{CELL}" height="{CELL}" rx="2.5" fill="{ramp[lvl]}" '
+                  f'style="animation-delay:{delay:.2f}s"/>\n')
     # legend
     ly = gy + 7*step + 22
     lx = W - 22 - (5*(CELL+3) + measure('400','less',8.5,.3) + measure('400','more',8.5,.3) + 20)
     b += '  <g class="f d3">\n'
     b += path('400', 'less', 8.5, lx, ly + 8, c['faint'], .3)
     bx = lx + measure('400','less',8.5,.3) + 8
-    for i, o in enumerate(STEPS):
+    for i, col in enumerate(ramp):
         b += (f'    <rect x="{bx+i*(CELL+3):.1f}" y="{ly}" width="{CELL}" height="{CELL}" '
-              f'rx="2.5" fill="{c["fg"]}" fill-opacity="{o}"/>\n')
+              f'rx="2.5" fill="{col}"/>\n')
     b += path('400', 'more', 8.5, bx + 5*(CELL+3) + 5, ly + 8, c['faint'], .3)
     b += '  </g>\n'
     b += path('400', f'@{LOGIN}', 9, 22, ly + 8, c['faint'], .8, cls='f d3')
