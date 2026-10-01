@@ -30,6 +30,8 @@ README.md                      the profile page
 assets/*.svg                   light-theme artwork
 assets/dark/*.svg              dark-theme artwork
 scripts/contrib.py             builds the contribution graph from the GitHub API
+scripts/cards.py               builds the stack panel and project cards (edit STACK / PROJECTS)
+scripts/icons.json             logo paths from Simple Icons (CC0)
 scripts/fonts/*.ttf            JetBrains Mono, subsetted to ASCII (~9KB each)
 .github/workflows/             daily refresh for the contribution graph
 ```
@@ -61,6 +63,16 @@ If you would rather skip the token entirely, delete the `<picture>` line referen
 Both themes are wired through `<picture>` + `prefers-color-scheme`, so GitHub swaps
 them automatically. All text inside the SVGs is vector paths — no font dependency,
 so it renders identically on every machine.
+
+## Stack panel and project cards
+
+`assets/stack.svg` and `assets/p-*.svg` are static: edit the `STACK` or `PROJECTS`
+lists in `scripts/cards.py`, then run `python scripts/cards.py` and commit. Logos use
+each brand's colour unless it would vanish on that theme's background. Status pills:
+`LIVE` and `DEPLOYED` get the green accent, everything else stays grey.
+
+The contribution graph palette is `PALETTE` in `scripts/contrib.py`
+(`green`, `ocean`, `ember`, `aurora`).
 
 ## Animation
 
